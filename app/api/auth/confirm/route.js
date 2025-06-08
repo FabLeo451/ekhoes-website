@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import pool from '@/lib/db';
 
+const SCHEMA = process.env.DB_SCHEMA;
+
 export async function POST(request) {
 
   const { searchParams } = new URL(request.url)
@@ -13,7 +15,7 @@ export async function POST(request) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const result = await pool.query(`select user_id from api.confirmations where request = 'sign-in' and token = $1`, [token]);
+    const result = await pool.query(`select user_id from ${SCHEMA}.confirmations where request = 'sign-in' and token = $1`, [token]);
 
     if (result.rowCount > 0) {
 
@@ -22,8 +24,8 @@ export async function POST(request) {
       let user_id = result.rows[0].user_id;
 
       await pool.query('BEGIN');
-      await pool.query(`update api.users set status = 'enabled' where id = $1`, [user_id]);
-      await pool.query(`delete from api.confirmations where token = $1`, [token]);
+      await pool.query(`update ${SCHEMA}.users set status = 'enabled' where id = $1`, [user_id]);
+      await pool.query(`delete from ${SCHEMA}.confirmations where token = $1`, [token]);
       await pool.query('COMMIT');
 
       return NextResponse.json({ message: 'Confirmed' }, { status: 200 });

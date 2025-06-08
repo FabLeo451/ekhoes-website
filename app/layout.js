@@ -24,7 +24,7 @@ export const metadata = {
 const COOKIE_NAME = process.env.COOKIE_NAME;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const noNavBar = ['/login', '/sign-in'];
+const noNavBar = ['/login'];
 
 
 /**

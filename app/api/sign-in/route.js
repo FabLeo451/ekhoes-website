@@ -4,16 +4,18 @@ import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
 import pool from '@/lib/db';
 
+const SCHEMA = process.env.DB_SCHEMA;
+
 async function sendMail(to, name, user_name, token) {
 
-	let subject = 'Registration to My App';
+	let subject = 'Registration to ekhoes.com';
 
 	let html = `
 		<p>Hello, ${name}.</p>
 		<p>Take note of your user code, it can be useful: <strong>${user_name}</strong>.</p>
 		<p>
 			Click on the link below to complete the registration process:<br>
-			<a href='http://localhost:3000/confirm?token=${token}'>Confirm</a>
+			<a href='http://localhost:3001/confirm?token=${token}'>Confirm</a>
 		</p>
 	`;
 
@@ -26,7 +28,7 @@ async function sendMail(to, name, user_name, token) {
 
     try {
       await transporter.sendMail({
-        from: '"Next.js App" <no-reply@nextjs.local>',
+        from: '"Ekhoes" <no-reply@ekhoes.com>',
         to,
         subject,
         html,
@@ -47,10 +49,10 @@ export async function POST(req) {
 		const id = uuidv4();
 
 		const query = `
-			INSERT INTO api.users ("id", "name", "email", "password") VALUES 
+			INSERT INTO ${SCHEMA}.users ("id", "name", "email", "password") VALUES 
 			($1, $2, $3, crypt($4, gen_salt('bf')))
 			RETURNING id, user_name
-			`;
+		`;
 
 		const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
@@ -58,8 +60,8 @@ export async function POST(req) {
 
 		const result = await pool.query(query, [id, username, email, password]);
 
-		await pool.query(`INSERT INTO api.user_roles ("user_id", "roles") VALUES ($1, 'USER')`, [id]);
-		await pool.query(`INSERT INTO api.confirmations ("user_id", "request", "token") VALUES ($1, 'sign-in', $2)`, [id, token]);
+		await pool.query(`INSERT INTO ${SCHEMA}.user_roles ("user_id", "roles") VALUES ($1, 'USER')`, [id]);
+		await pool.query(`INSERT INTO ${SCHEMA}.confirmations ("user_id", "request", "token") VALUES ($1, 'sign-in', $2)`, [id, token]);
 
 		await pool.query('COMMIT');
 
