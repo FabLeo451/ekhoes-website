@@ -123,7 +123,8 @@ export async function POST(request) {
 
     // Create a JWT token and set coocke
 
-    const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
+    //const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
+    const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET);
     /*
         setCookie(res, COOKIE_NAME, token, {
             httpOnly: true,
@@ -144,7 +145,8 @@ export async function POST(request) {
     //console.log('[login] token = ', token);
 
     try {
-        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }), 'EX', 3600);
+        //await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }), 'EX', 3600);
+        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }));
     } catch (err) {
         return new NextResponse(JSON.stringify({ message: 'Redis unavailable', error: err.message }), {
             status: 500,

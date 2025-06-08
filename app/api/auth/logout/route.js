@@ -25,6 +25,7 @@ export async function OPTIONS(req) {
   });
 }
 
+
 export async function POST(req) {
 
   const origin = req.headers.get('origin') || '*';
@@ -39,21 +40,6 @@ export async function POST(req) {
 
 	const cookieStore = await cookies();
 	const token = cookieStore.get(COOKIE_NAME)?.value;
-
-	//console.log('[logout] token = ', token);
-
-	if (!token) {
-		return new NextResponse(JSON.stringify({ message: 'No token found' }), {
-			status: 400,
-			headers: headers,
-		});
-	}
-
-	try {
-		const decoded = jwt.verify(token, JWT_SECRET);
-		//console.log('[logout] decoded = ', decoded);
-
-		await redis.del(decoded.sessionId);
 
 		// Invalida il cookie
 		const cookie = serialize(COOKIE_NAME, '', {
@@ -71,6 +57,18 @@ export async function POST(req) {
 				'Set-Cookie': cookie,
 			},
 		});
+	//console.log('[logout] token = ', token);
+
+	if (!token) {
+		return response;
+	}
+
+	try {
+		const decoded = jwt.verify(token, JWT_SECRET);
+		//console.log('[logout] decoded = ', decoded);
+
+		if (decoded.sessionId)
+			await redis.del(decoded.sessionId);
 
 		return response;
 
