@@ -37,7 +37,7 @@ export default async function HomeLoggedIn() {
             <div className="card w-85 bg-white/10 border border-white/10 backdrop-blur-md shadow-2xl shadow-black/40">
                 <div className="card-body">
                     <h2 className="card-title">Contacts</h2>
-                    <p className="text-gray-400">Leave a message</p>
+                    <p className="text-gray-400">Leave a message for our team</p>
                     <div className="card-actions justify-end">
                         <Link href="/contacts">
                             <button className="btn btn-primary">Go</button>
