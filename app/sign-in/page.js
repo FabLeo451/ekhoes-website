@@ -7,10 +7,11 @@ import ResultBox from '@/components/ResultBox';
 
 function Success({ username }) {
   return (
-    <div className="m-4">
-      <h2 className="text-xl font-bold mb-2">✅ Registration Successful</h2>
-      <p>Welcome, <strong>{username}</strong>!</p>
-      <p>You will receive an email with a link. Click on the link to complete the process</p>
+    <div className="m-[6em] w-[20em] mx-auto justify-center text-center">
+      <div className="text-2xl font-bold mb-2">✅ Registration Successful</div>
+      <p className="my-[2em]">Welcome, <strong>{username}</strong>!</p>
+      <p>You will receive an email with a link.</p>
+      <p>Click on the link to complete the process.</p>
     </div>
   );
 }

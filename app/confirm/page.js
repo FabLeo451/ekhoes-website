@@ -32,13 +32,18 @@ export default async function Confirm({ searchParams }) {
     <div>
       {success ? (
         <div style={{ color: 'green' }}>
-          <h2>Successo!</h2>
-          <p>{message}</p>
+          <div className="m-[6em] w-[20em] mx-auto justify-center text-center">
+            <div className="text-2xl font-bold mb-2">✅ Confirmed</div>
+            <p className="my-[2em]">Welcome, <strong>{username}</strong>!</p>
+            <p>Welcome! Now you can log in with your email and password.</p>
+          </div>
         </div>
       ) : (
         <div style={{ color: 'red' }}>
-          <h2>Errore</h2>
-          <p>{message}</p>
+          <div className="m-[6em] w-[20em] mx-auto justify-center text-center">
+            <h2>Error</h2>
+            <p>{message}</p>
+          </div>
         </div>
       )}
     </div>
