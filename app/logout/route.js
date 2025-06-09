@@ -1,6 +1,9 @@
 
 import { NextResponse } from 'next/server';
+const redis = require('@/lib/redis');
 
+const SCHEMA = process.env.DB_SCHEMA;
+const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = process.env.COOKIE_NAME;
 
 export async function OPTIONS(req) {
@@ -17,7 +20,39 @@ export async function OPTIONS(req) {
   });
 }
 
+/**
+ * Delete user session if exists
+ * @returns true is session has been deleted
+ */
+async function deleteSession() {
+
+	let result = { status: 200 };
+
+	const cookieStore = await cookies();
+	const token = cookieStore.get(COOKIE_NAME)?.value;
+
+	if (!token)
+    return;
+
+	try {
+		const decoded = jwt.verify(token, JWT_SECRET);
+		const sessionData = await redis.get(`${decoded.sessionId}`);
+
+		if (sessionData) {
+			await redis.del(decoded.sessionId);
+      return true;
+		}
+
+	} catch (err) {
+
+	}
+
+	return false;
+}
+
 export async function GET() {
+
+  deleteSession();
 
   const response = NextResponse.redirect(process.env.NEXT_PUBLIC_API_BASE_URL);
 
