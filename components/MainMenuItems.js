@@ -45,13 +45,13 @@ export default function MainMenuItems({ label = "You" }) {
 		}
 	};
 
-
 	return (
 		<>
 		<About />
 		<ul
 			tabIndex={0}
 			className="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm">
+			<li><a href="/profile">Edit profile</a></li>
 			<li><a href="/" onClick={handleLogout}>Log out</a></li>
 		</ul>
 		</>

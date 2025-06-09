@@ -19,7 +19,9 @@ function Form({ onSuccess }) {
   const [userId, setUserId] = useState(null);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [error, setError] = useState(null);
+
+  const [successMsg, setSuccessMessage] = useState(null);
+  const [errorMsg, setError] = useState(null);
 
   const formValid = email && name;
 
@@ -30,9 +32,13 @@ function Form({ onSuccess }) {
       return;
 
     try {
-      setError('');
+      setError(null);
+      setSuccessMessage(null)
       const response = await axios.put(`/api/auth/me`, { email, name });
       //onSuccess(response.data.username || username);
+
+      setSuccessMessage('Profile successfully updated')
+
     } catch (err) {
       if (!err.response) {
         setError('Network error: ' + err.message);
@@ -44,7 +50,8 @@ function Form({ onSuccess }) {
 
   const getCurrentValues = async () => {
     try {
-      setError('');
+      setError(null);
+      setSuccessMessage(null)
 
       const response = await axios.get('/api/auth/me');
 
@@ -67,18 +74,30 @@ function Form({ onSuccess }) {
 
     // Get current values
     getCurrentValues();
-    
+
   }, []);
 
   return (
     <>
-      <div className="flex justify-center mt-[3em] font-bold text-4xl">
-        Profile
-      </div>
+      {successMsg && (
+        <div role="alert" className="alert alert-success w-[20em] mx-auto mt-3">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{successMsg}</span>
+        </div>
+      )}
+
+      {errorMsg && (
+        <div role="alert" className="alert alert-error w-[20em] mx-auto mt-3">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>errorMsg</span>
+        </div>
+      )}
 
       <div className="w-[20em] mx-auto">
-
-        <ResultBox fail="true" className={`${error ? '' : 'invisible'}`}>{error}</ResultBox>
 
         <form onSubmit={handleSubmit} className="w-[20em]">
           <div>
@@ -108,7 +127,12 @@ export default function Profile() {
 
   return (
     <div>
-        <Form />
+      <div className="flex justify-center mt-[3em] font-bold text-4xl">
+        Profile
+      </div>
+
+      <Form />
+
     </div>
   );
 }
