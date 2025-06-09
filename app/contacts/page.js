@@ -157,9 +157,12 @@ export default function Contacts() {
 		try {
 			setError(null);
 			setSuccessMessage(null)
-			const response = await axios.post(`/api/message`, { from: name, message });
+			const response = await axios.post(`/api/message`, { name, message });
 
 			setSuccessMessage('Your message has been successfully sent');
+
+			setMessage('');
+			setName('');
 
 		} catch (err) {
 			if (!err.response) {
@@ -207,7 +210,7 @@ export default function Contacts() {
 
 						<div>
 							<div className="mt-[2em] mb-[0.5em]">Message</div>
-							<textarea className="textarea h-30" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here"></textarea>
+							<textarea className="textarea h-30" value={message} maxLength={500} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here"></textarea>
 						</div>
 
 						<div className="mt-[2em]">
