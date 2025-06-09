@@ -33,29 +33,29 @@ const noNavBar = ['/login'];
  */
 async function isAuthenticated(token) {
 
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      const session = await redis.get(decoded.sessionId);
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const session = await redis.get(decoded.sessionId);
 
-      if (session) {
-        const data = JSON.parse(session);
+    if (session) {
+      const data = JSON.parse(session);
 
-		/*
-        // Renew session
-        data.updated = new Date().toISOString();
-        data.path = url;
-        await redis.set(decoded.sessionId, JSON.stringify(data));
-		*/
-        return true;
+      /*
+          // Renew session
+          data.updated = new Date().toISOString();
+          data.path = url;
+          await redis.set(decoded.sessionId, JSON.stringify(data));
+      */
+      return true;
 
-      } else {
-        console.log('[layout] Session not found:', decoded.sessionId);
-      }
-    } catch (e) {
-      console.log('[layout] Token error:', e.message);
+    } else {
+      console.log('[layout] Session not found:', decoded.sessionId);
     }
+  } catch (e) {
+    console.log('[layout] Token error:', e.message);
+  }
 
-    return false;
+  return false;
 }
 
 export default async function RootLayout({ children }) {
@@ -75,11 +75,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" data-theme="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="relative h-screen bg-black text-white overflow-hidden">
-          {/* Sfondo */}
+          {/* Background */}
           <div className="absolute inset-0 z-0">
             <img
               src="/digital-echo.jpg"
@@ -91,7 +89,7 @@ export default async function RootLayout({ children }) {
           {/* Overlay */}
           <div className="absolute inset-0 bg-[#00f2ff]/10 z-10 mix-blend-multiply"></div>
 
-          {/* ✅ Navbar + contenuto con z-index più alto */}
+          {/* ✅ Navbar + content */}
           <div className="relative z-20">
             {!hideNavbar && <Navbar />}
             {children}

@@ -140,8 +140,10 @@ function Form({ onSuccess }) {
 					</div>
 
 
-					<div className="mt-[3em]">
-						<button className="btn btn-error" onClick={handleDeleteAccount}>Delete account</button>
+					<div className="flex justify-center my-[5em]">
+						<button className="btn btn-error" onClick={handleDeleteAccount}>
+							Delete account
+						</button>
 					</div>
 
 				</form>

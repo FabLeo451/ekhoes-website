@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import Link from 'next/link';
 import MainMenuItems from '@/components/MainMenuItems';
-import { UserIcon } from '@heroicons/react/24/outline'
+import { HomeIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export default async function Navbar() {
 
@@ -26,8 +26,9 @@ export default async function Navbar() {
     return (
         <div className="navbar fixed top-0 left-0 w-full z-50 bg-transparent px-4 py-2">
             <div className="flex-1">
-                <a href="/" className="btn btn-ghost text-gray-300">ekhoes.com</a>
+                <a href="/" className="btn btn-ghost text-gray-300"><HomeIcon className="w-4" /> ekhoes.com</a>
             </div>
+            
             <div className="flex justify-end w-full">
                 <div className="flex items-center space-x-2">
                     <div className="dropdown dropdown-end">
