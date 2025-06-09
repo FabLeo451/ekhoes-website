@@ -11,8 +11,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = process.env.COOKIE_NAME;
 const SCHEMA = process.env.DB_SCHEMA;
 
-// curl -v -X POST -H "Origin: http://localhost:3000" -H "Content-Type: application/json" -d '{ "email":"q@w.e", "password": "fabio"}' http://192.168.1.126:3000/api/auth/login
-
 // CORS preflight
 export async function OPTIONS(request) {
     const origin = request.headers.get('origin') || 'http://localhost:3000';
