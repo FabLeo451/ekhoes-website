@@ -146,7 +146,7 @@ export async function POST(request) {
 
     try {
         //await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }), 'EX', 3600);
-        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }));
+        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, updated, status }));
     } catch (err) {
         return new NextResponse(JSON.stringify({ message: 'Redis unavailable', error: err.message }), {
             status: 500,
