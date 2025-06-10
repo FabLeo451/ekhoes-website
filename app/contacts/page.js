@@ -203,7 +203,7 @@ export default function Contacts() {
 
 					<form onSubmit={handleSendMessage} className="w-[20em]">
 
-						<div className="mt-[2em] mb-[0.5em]">Name</div>
+						<div className="mt-[2em] mb-[0.5em]">Your name</div>
 						<label className="input">
 							<input type="text" placeholder="Any name you want" value={name} onChange={(e) => setName(e.target.value)} className="w-full" required />
 						</label>
