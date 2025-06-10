@@ -158,7 +158,7 @@ export default function Profile() {
 	return (
 		<div>
 			<div className="flex justify-center mt-[3em] font-bold text-4xl">
-				Profile
+				Your profile
 			</div>
 
 			<Form />

@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import Link from 'next/link';
 import MainMenuItems from '@/components/MainMenuItems';
-import { ChevronDownIcon, UserIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 export default async function Navbar() {
 
@@ -27,7 +27,7 @@ export default async function Navbar() {
         <div className="navbar fixed top-0 left-0 w-full z-50 bg-transparent px-4 py-2">
             <div className="flex-1">
                 <Link href="/">
-                    <button className="btn btn-soft">ekhoes.com</button>
+                    <button className="btn btn-soft">Home</button>
                 </Link>
             </div>
 
@@ -36,7 +36,7 @@ export default async function Navbar() {
                     <div className="dropdown dropdown-end">
                         {loggedIn ? (
                             <div className="dropdown dropdown-end">
-                                <div tabIndex={0} role="button" className="btn btn-ghost rounded-field"><UserIcon className="w-6" /> {decoded.user ? decoded.user.name : 'Menu'} <ChevronDownIcon className="w-6" /></div>
+                                <div tabIndex={0} role="button" className="btn btn-ghost rounded-field">{decoded.user ? decoded.user.name : 'Menu'} <ChevronDownIcon className="w-6" /></div>
                                 <MainMenuItems />
                             </div>
                         ) : (
