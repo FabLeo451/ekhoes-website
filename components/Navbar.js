@@ -40,9 +40,14 @@ export default async function Navbar() {
                                 <MainMenuItems />
                             </div>
                         ) : (
+                            <>
                             <Link href="/login">
-                                <button className="btn btn-soft">Log in</button>
+                                <button className="btn btn-primary mx-[2em]">Log in</button>
                             </Link>
+                            <Link href="/sign-in">
+                                <button className="btn btn-soft">Sign in</button>
+                            </Link>
+                            </>
                         )}
                     </div>
                 </div>
