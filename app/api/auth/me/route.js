@@ -105,13 +105,13 @@ export async function PUT(request) {
 	const userId = result.data.user.id;
 	let rowCount = 0;
 
-	const { email, name } = await request.json();
+	const { name } = await request.json();
 
 	try {
 
-		console.log('[me] Updating ', [email, name, userId]);
+		console.log('[me] Updating ', [name, userId]);
 
-		const result = await pool.query(`update ${SCHEMA}.users set email = $1, name = $2 where id = $3`, [email, name, userId]);
+		const result = await pool.query(`update ${SCHEMA}.users set name = $1 where id = $2`, [name, userId]);
 
 		rowCount = result.rowCount;
 

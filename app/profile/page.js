@@ -16,13 +16,13 @@ function Success({ username }) {
 
 function Form({ onSuccess }) {
 	const [userId, setUserId] = useState(null);
-	const [email, setEmail] = useState('');
+	//const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 
 	const [successMsg, setSuccessMessage] = useState(null);
 	const [errorMsg, setError] = useState(null);
 
-	const formValid = email && name;
+	const formValid = name;
 
 	const router = useRouter();
 
@@ -35,7 +35,7 @@ function Form({ onSuccess }) {
 		try {
 			setError(null);
 			setSuccessMessage(null)
-			const response = await axios.put(`/api/auth/me`, { email, name });
+			const response = await axios.put(`/api/auth/me`, { name });
 			//onSuccess(response.data.username || username);
 
 			setSuccessMessage('Profile successfully updated')
@@ -80,7 +80,7 @@ function Form({ onSuccess }) {
 			//console.log(response)
 
 			setUserId(response.data.user.id);
-			setEmail(response.data.user.email);
+			//setEmail(response.data.user.email);
 			setName(response.data.user.name);
 
 		} catch (err) {
@@ -122,13 +122,13 @@ function Form({ onSuccess }) {
 			<div className="w-[20em] mx-auto">
 
 				<form onSubmit={handleSubmit} className="w-[20em]">
-					<div>
+					{/*<div>
 						<div className="mt-[2em] mb-[0.5em]">Email</div>
 						<label className="input validator">
 							<input type="email" placeholder="mail@site.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 						</label>
 						<div className="validator-hint hidden">Enter valid email address</div>
-					</div>
+					</div>*/}
 
 					<div className="mt-[2em] mb-[0.5em]">Name</div>
 					<label className="input">
@@ -139,8 +139,15 @@ function Form({ onSuccess }) {
 						<button className="btn btn-primary" type="submit" disabled={!formValid} >Save</button>
 					</div>
 
+					<div className="flex justify-center mt-[2em] text-gray-300">
+						<a href="/change-password" className="link" >Change password</a>
+					</div>
 
-					<div className="flex justify-center my-[5em]">
+					<div className="flex justify-center mt-[1em] text-gray-300">
+						<a href="/change-email" className="link" >Change email</a>
+					</div>
+
+					<div className="flex justify-center my-[3em]">
 						<button className="btn btn-error" onClick={handleDeleteAccount}>
 							Delete account
 						</button>
