@@ -102,7 +102,7 @@ function Form({ onSuccess }) {
 	return (
 		<>
 			{successMsg && (
-				<div role="alert" className="alert alert-success w-[20em] mx-auto mt-3">
+				<div role="alert" className="alert alert-success w-full max-w-[90vw] lg:max-w-[50vw] mx-auto mt-3">
 					<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
 						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 					</svg>
@@ -111,7 +111,7 @@ function Form({ onSuccess }) {
 			)}
 
 			{errorMsg && (
-				<div role="alert" className="alert alert-error w-[20em] mx-auto mt-3">
+				<div role="alert" className="alert alert-error w-full max-w-[90vw] lg:max-w-[50vw] mx-auto mt-3">
 					<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
 						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
 					</svg>
@@ -140,7 +140,7 @@ function Form({ onSuccess }) {
 					</div>
 
 					<div className="flex justify-center mt-[2em] text-gray-300">
-						<a href="/change-password" className="link" >Change password</a>
+						<a href="/profile/password" className="link" >Change password</a>
 					</div>
 
 					<div className="flex justify-center mt-[1em] text-gray-300">

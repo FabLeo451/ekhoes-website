@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import { serialize } from 'cookie';
 const redis = require('@/lib/redis');
 import pool from '@/lib/db';
 import * as Session from '@/lib/session';
@@ -65,26 +64,6 @@ export async function OPTIONS(req) {
 	});
 }
 
-export async function GET(req) {
-	const origin = req.headers.get('origin') || '*';
-
-	const corsHeaders = {
-		'Access-Control-Allow-Origin': origin,
-		'Access-Control-Allow-Methods': 'GET, OPTIONS',
-		'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-		'Access-Control-Allow-Credentials': 'true',
-		'Content-Type': 'application/json',
-	};
-
-	let result = await Session.getCurrentSession();
-
-	return new NextResponse(JSON.stringify(result.status == 200 ? result.data : result), {
-		status: result.status,
-		headers: corsHeaders,
-	});
-
-}
-
 export async function PUT(request) {
 	const origin = request.headers.get('origin') || '*';
 
@@ -96,6 +75,7 @@ export async function PUT(request) {
 		'Content-Type': 'application/json',
 	};
 
+	//let result = await getMe(request);
 	let result = await Session.getCurrentSession();
 
 	if (result.status != 200) {
@@ -108,66 +88,16 @@ export async function PUT(request) {
 	const userId = result.data.user.id;
 	let rowCount = 0;
 
-	const { name } = await request.json();
+	const { password } = await request.json();
 
 	try {
 
-		console.log('[me] Updating ', [name, userId]);
-
-		const result = await pool.query(`update ${SCHEMA}.users set name = $1 where id = $2`, [name, userId]);
+		const result = await pool.query(`update ${SCHEMA}.users set password = crypt($1, gen_salt('bf')) where id = $2`, [password, userId]);
 
 		rowCount = result.rowCount;
 
 	} catch (err) {
-		console.log('[me]', err)
-		var msg = 'Database error ' + err.code + ' ' + err.message;
-		return new NextResponse(JSON.stringify({ message: 'Database error', error: err.message }), {
-			status: 500,
-			headers: corsHeaders,
-		});
-	}
-
-	const response = NextResponse.json({ rowCount }, {
-		status: 200,
-		headers: corsHeaders,
-	});
-
-	return response;
-}
-
-export async function DELETE(request) {
-	const origin = request.headers.get('origin') || '*';
-
-	const corsHeaders = {
-		'Access-Control-Allow-Origin': origin,
-		'Access-Control-Allow-Methods': 'GET, OPTIONS',
-		'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-		'Access-Control-Allow-Credentials': 'true',
-		'Content-Type': 'application/json',
-	};
-
-	let result = await Session.getCurrentSession();
-
-	if (result.status != 200) {
-		return new NextResponse(JSON.stringify(result), {
-			status: result.status,
-			headers: corsHeaders,
-		});
-	}
-
-	const userId = result.data.user.id;
-	let rowCount = 0;
-
-	try {
-
-		console.log('[me] Deleting ', [userId]);
-
-		const result = await pool.query(`delete from ${SCHEMA}.users where id = $1 and reserved = false`, [userId]);
-
-		rowCount = result.rowCount;
-
-	} catch (err) {
-		console.log('[me]', err)
+		console.log('[me/password]', err)
 		var msg = 'Database error ' + err.code + ' ' + err.message;
 		return new NextResponse(JSON.stringify({ message: 'Database error', error: err.message }), {
 			status: 500,
