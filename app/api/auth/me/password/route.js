@@ -92,7 +92,7 @@ export async function PUT(request) {
 
 	try {
 
-		const result = await pool.query(`update ${SCHEMA}.users set password = crypt($1, gen_salt('bf')) where id = $2`, [password, userId]);
+		const result = await pool.query(`update ${SCHEMA}.users set password = crypt($1, gen_salt('bf')), updated = now() where id = $2`, [password, userId]);
 
 		rowCount = result.rowCount;
 

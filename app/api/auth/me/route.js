@@ -112,9 +112,7 @@ export async function PUT(request) {
 
 	try {
 
-		console.log('[me] Updating ', [name, userId]);
-
-		const result = await pool.query(`update ${SCHEMA}.users set name = $1 where id = $2`, [name, userId]);
+		const result = await pool.query(`update ${SCHEMA}.users set name = $1, updated = now() where id = $2`, [name, userId]);
 
 		rowCount = result.rowCount;
 
