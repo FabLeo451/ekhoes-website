@@ -38,7 +38,7 @@ function Form({ onSuccess }) {
 			const response = await axios.put(`/api/auth/me`, { name });
 			//onSuccess(response.data.username || username);
 
-			setSuccessMessage('Profile successfully updated')
+			setSuccessMessage('Profile successfully updated. Refresh page to see the changes.')
 
 		} catch (err) {
 			if (!err.response) {
