@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
 import pool from '@/lib/db';
+import * as Mail from '@/lib/mail';
 
 const SCHEMA = process.env.DB_SCHEMA;
 
@@ -19,27 +20,7 @@ async function sendMail(to, name, user_name, token) {
 		</p>
 	`;
 
-    // Configura il transporter SMTP per MailDev
-    let transporter = nodemailer.createTransport({
-      host: 'localhost',
-      port: 1025,
-      secure: false, // MailDev non usa TLS
-    });
-
-    try {
-      await transporter.sendMail({
-        from: '"Ekhoes" <no-reply@ekhoes.com>',
-        to,
-        subject,
-        html,
-      });
-
-      return true;
-
-    } catch (error) {
-		console.log('[sign-in] ', error)
-      return false;
-    }
+    return Mail.send(to, subject, html);
 }
 
 export async function POST(req) {

@@ -1,8 +1,8 @@
 
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 const redis = require('@/lib/redis');
 
-const SCHEMA = process.env.DB_SCHEMA;
 const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = process.env.COOKIE_NAME;
 

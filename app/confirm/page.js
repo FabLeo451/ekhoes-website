@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 export default async function Confirm({ searchParams }) {
   const params = await searchParams;
@@ -10,7 +11,7 @@ export default async function Confirm({ searchParams }) {
 
   let success = false;
   let message = '';
-
+/*
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/confirm?token=${token}`, {
       method: 'POST',
@@ -27,6 +28,19 @@ export default async function Confirm({ searchParams }) {
   } catch (error) {
     message = 'Network error: ' + error.message;
   }
+*/
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/confirm?token=${token}`);
+      success = true;
+      message = 'Email successfully confirmed!';
+    } catch (err) {
+      console.log(err)
+      if (!err.response) {
+        message = 'Network error: ' + err.message;
+      } else {
+        message = err.message || 'Something went wrong';
+      }
+    }
 
   return (
     <div>

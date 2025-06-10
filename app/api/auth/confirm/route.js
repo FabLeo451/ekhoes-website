@@ -4,6 +4,21 @@ import pool from '@/lib/db';
 
 const SCHEMA = process.env.DB_SCHEMA;
 
+// Handle CORS preflight if needed
+export async function OPTIONS(req) {
+	const origin = req.headers.get('origin') || '*';
+
+	return new NextResponse(null, {
+		status: 204,
+		headers: {
+			'Access-Control-Allow-Origin': origin,
+			'Access-Control-Allow-Methods': 'GET, OPTIONS',
+			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+			'Access-Control-Allow-Credentials': 'true',
+		},
+	});
+}
+
 export async function POST(request) {
 
   const { searchParams } = new URL(request.url)
@@ -11,6 +26,16 @@ export async function POST(request) {
 
   console.log('[confirm] token =', token)
 
+	const origin = request.headers.get('origin') || '*';
+
+	const corsHeaders = {
+		'Access-Control-Allow-Origin': origin,
+		'Access-Control-Allow-Methods': 'GET, OPTIONS',
+		'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+		'Access-Control-Allow-Credentials': 'true',
+		'Content-Type': 'application/json',
+	};
+  
   try {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -28,10 +53,10 @@ export async function POST(request) {
       await pool.query(`delete from ${SCHEMA}.confirmations where token = $1`, [token]);
       await pool.query('COMMIT');
 
-      return NextResponse.json({ message: 'Confirmed' }, { status: 200 });
+      return NextResponse.json({ message: 'Confirmed' }, { status: 200, headers: corsHeaders });
 
     } else {
-      return NextResponse.json({ message: 'Confirmation record not found' }, { status: 404 });
+      return NextResponse.json({ message: 'Confirmation record not found' }, { status: 404, headers: corsHeaders });
     }
 
   } catch (err) {
