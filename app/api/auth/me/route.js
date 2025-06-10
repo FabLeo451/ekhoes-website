@@ -78,13 +78,14 @@ export async function GET(req) {
 
 	let result = await Session.getCurrentSession();
 
-	return new NextResponse(JSON.stringify(result.status == 200 ? result.data : result), {
-		status: result.status,
+	return new NextResponse(JSON.stringify(result._found ? result.data : result), {
+		status: result._found ? 200 : 500,
 		headers: corsHeaders,
 	});
 
 }
 
+// PUT /api/auth/me
 export async function PUT(request) {
 	const origin = request.headers.get('origin') || '*';
 
@@ -98,9 +99,9 @@ export async function PUT(request) {
 
 	let result = await Session.getCurrentSession();
 
-	if (result.status != 200) {
+	if (!result._found) {
 		return new NextResponse(JSON.stringify(result), {
-			status: result.status,
+			status: 400,
 			headers: corsHeaders,
 		});
 	}
@@ -115,6 +116,9 @@ export async function PUT(request) {
 		const result = await pool.query(`update ${SCHEMA}.users set name = $1, updated = now() where id = $2`, [name, userId]);
 
 		rowCount = result.rowCount;
+
+		if (!Session.updateUser({ name }))
+			console.log('[me] Unable tu update session');
 
 	} catch (err) {
 		console.log('[me]', err)

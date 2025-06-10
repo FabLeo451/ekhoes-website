@@ -78,9 +78,9 @@ export async function PUT(request) {
 	//let result = await getMe(request);
 	let result = await Session.getCurrentSession();
 
-	if (result.status != 200) {
+	if (!result._found) {
 		return new NextResponse(JSON.stringify(result), {
-			status: result.status,
+			status: 400,
 			headers: corsHeaders,
 		});
 	}
