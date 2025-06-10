@@ -18,6 +18,7 @@ function Form({ onSuccess }) {
 	const [userId, setUserId] = useState(null);
 	//const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
 
 	const [successMsg, setSuccessMessage] = useState(null);
 	const [errorMsg, setError] = useState(null);
@@ -51,6 +52,8 @@ function Form({ onSuccess }) {
 
 	const handleDeleteAccount = async (e) => {
 		e.preventDefault();
+		
+		setIsOpen(false);
 
 		try {
 			setError(null);
@@ -119,6 +122,25 @@ function Form({ onSuccess }) {
 				</div>
 			)}
 
+			{/* Modal DaisyUI */}
+			{isOpen && (
+				<div className="modal modal-open">
+					<div className="modal-box">
+						<h3 className="font-bold text-lg">Confirm</h3>
+						<p className="py-4">Are you sure you want to delete your account?</p>
+						<div className="modal-action">
+							<button className="btn btn-error mx-[1em]" onClick={handleDeleteAccount}>
+								Proceed
+							</button>
+							<button className="btn" onClick={() => setIsOpen(false)}>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+
+
 			<div className="w-[20em] mx-auto">
 
 				<form onSubmit={handleSubmit} className="w-[20em]">
@@ -147,13 +169,13 @@ function Form({ onSuccess }) {
 						<a href="/change-email" className="link" >Change email</a>
 					</div>
 
-					<div className="flex justify-center my-[3em]">
-						<button className="btn btn-error" onClick={handleDeleteAccount}>
-							Delete account
-						</button>
-					</div>
-
 				</form>
+
+				<div className="flex justify-center my-[3em]">
+					<button className="btn btn-error" onClick={() => setIsOpen(true)}>
+						Delete account
+					</button>
+				</div>
 			</div>
 		</>
 	);
