@@ -122,7 +122,7 @@ export async function POST(request) {
     // Create a JWT token and set coocke
 
     //const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
-    const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET);
+    const token = jwt.sign({ sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET);
     /*
         setCookie(res, COOKIE_NAME, token, {
             httpOnly: true,
