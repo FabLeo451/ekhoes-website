@@ -10,9 +10,9 @@ export default async function Navbar() {
     return (
         <div className="navbar fixed top-0 left-0 w-full z-50 bg-transparent px-4 py-2">
             <div className="flex-1">
-                <Link href="/">
+                <a href="/">
                     <button className="btn btn-soft">Home</button>
-                </Link>
+                </a>
             </div>
 
             <div className="flex justify-end w-full">
@@ -25,9 +25,9 @@ export default async function Navbar() {
                             </div>
                         ) : (
                             <>
-                            <Link href="/login">
-                                <button className="btn btn-primary mx-[2em]">Log in</button>
-                            </Link>
+                            <a href="/login">
+                                <button className="btn btn-primary">Log in</button>
+                            </a>
                             {/*<Link href="/sign-in">
                                 <button className="btn btn-soft">Sign in</button>
                             </Link>*/}

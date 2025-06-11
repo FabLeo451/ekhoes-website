@@ -55,7 +55,7 @@ export default function LoginPage() {
     };
     return (
         <>
-            <div className="flex justify-center my-[1em] font-bold text-4xl">
+            <div className="flex justify-center font-bold text-4xl">
                 Log in
             </div>
 

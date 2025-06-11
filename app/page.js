@@ -44,12 +44,13 @@ export default async function Home() {
 			{loggedIn ? (
 				<HomeLoggedIn />
 			) : (
-				<div className="relative min-h-screen flex flex-col text-center px-6 py-[6em]">
+				<div className="relative min-h-screen flex flex-col text-center px-6 py-[3em]">
+
 					<div className="flex flex-col items-center gap-4">
 						<h1 className="text-5xl md:text-6xl font-extrabold text-white neon-text drop-shadow-md animate-pulse">
 							ekhoes
 						</h1>
-						<p className="text-lg md:text-xl text-gray-400">
+						<p className="text-lg md:text-xl text-gray-400 mt-[2em]">
 							work in progres...
 						</p>
 					</div>
@@ -68,7 +69,6 @@ export default async function Home() {
 							))}
 						</div>
 					</div>
-
 
 				</div>
 			)

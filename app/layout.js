@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies, headers } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import * as Session from '@/lib/session';
@@ -34,7 +35,9 @@ export default async function RootLayout({ children }) {
 
   if (token) {
     if (!await Session.isAuthenticated()) {
-      console.log('[layout] Token found. Session not found');
+      
+      // Token found. Session not found. Redirect to /logout to invalidate token
+
       redirect('/logout');
     }
   }
@@ -42,6 +45,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+
         <div className="relative h-screen bg-black text-white overflow-hidden">
           {/* Background */}
           <div className="absolute inset-0 z-0">
@@ -58,11 +62,19 @@ export default async function RootLayout({ children }) {
           {/* ✅ Navbar + content */}
           <div className="relative z-20">
             {!hideNavbar && <Navbar />}
-            {children}
+            {hideNavbar && (        <div className="navbar fixed top-0 left-0 w-full z-50 bg-transparent px-4 py-2">
+            <div className="flex-1">
+                <a href="/">
+                    <button className="btn btn-soft">Home</button>
+                </a>
+            </div>
+        </div>)}
+
+            <div className="mt-[5em]">
+              {children}
+            </div>
           </div>
         </div>
-
-
 
       </body>
     </html>
