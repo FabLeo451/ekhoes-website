@@ -6,6 +6,7 @@ import pool from '@/lib/db';
 
 const SCHEMA = process.env.DB_SCHEMA;
 const MAX_NEWS = process.env.MAX_NEWS || 10;
+const TAGLINE = process.env.TAGLINE || 'Work in progress...';
 
 async function getNews() {
 	const res = await pool.query(`SELECT id, created, text FROM ${SCHEMA}.NEWS ORDER BY created DESC LIMIT ${MAX_NEWS}`);
@@ -51,7 +52,7 @@ export default async function Home() {
 							ekhoes
 						</h1>
 						<p className="text-lg md:text-xl text-gray-400 mt-[2em]">
-							work in progres...
+							{TAGLINE}
 						</p>
 					</div>
 
