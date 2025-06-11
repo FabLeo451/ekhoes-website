@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
 const redis = require('@/lib/redis');
 import pool from '@/lib/db';
 import * as Session from '@/lib/session';
@@ -43,7 +41,7 @@ export async function PUT(request) {
 		});
 	}
 
-	const userId = result.data.user.id;
+	const userId = session.data.user.id;
 	let rowCount = 0;
 
 	const { password } = await request.json();
