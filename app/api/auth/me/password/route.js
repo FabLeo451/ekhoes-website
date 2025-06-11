@@ -7,48 +7,6 @@ import * as Session from '@/lib/session';
 
 const SCHEMA = process.env.DB_SCHEMA;
 
-/*
-const JWT_SECRET = process.env.JWT_SECRET;
-const COOKIE_NAME = process.env.COOKIE_NAME;
-
-async function getMe(req) {
-
-	let result = { status: 200 };
-
-	const cookieStore = await cookies();
-	const token = cookieStore.get(COOKIE_NAME)?.value;
-
-	if (!token) {
-		result = {
-			status: 401,
-			message: 'Not authenticated',
-		};
-	}
-
-	try {
-		const decoded = jwt.verify(token, JWT_SECRET);
-		const sessionData = await redis.get(`${decoded.sessionId}`);
-
-		if (!sessionData) {
-			return new NextResponse(JSON.stringify({ message: 'Session not found' }), {
-				status: 401,
-				headers: corsHeaders,
-			});
-		}
-
-		result.data = JSON.parse(sessionData);
-
-	} catch (err) {
-		result = {
-			status: 401,
-			message: err.message,
-		};
-	}
-
-	return result;
-}
-*/
-
 // Handle CORS preflight if needed
 export async function OPTIONS(req) {
 	const origin = req.headers.get('origin') || '*';
@@ -76,11 +34,11 @@ export async function PUT(request) {
 	};
 
 	//let result = await getMe(request);
-	let result = await Session.getCurrentSession();
+	let session = await Session.getCurrentSession();
 
-	if (!result._found) {
-		return new NextResponse(JSON.stringify(result), {
-			status: 400,
+	if (!session) {
+		return new NextResponse(JSON.stringify({ message: "Not authenticated"}), {
+			status: 403,
 			headers: corsHeaders,
 		});
 	}

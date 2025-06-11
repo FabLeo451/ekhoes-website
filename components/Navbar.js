@@ -18,9 +18,9 @@ export default async function Navbar() {
             <div className="flex justify-end w-full">
                 <div className="flex items-center space-x-2">
                     <div className="dropdown dropdown-end">
-                        {session._found ? (
+                        {session ? (
                             <div className="dropdown dropdown-end">
-                                <div tabIndex={0} role="button" className="btn btn-ghost rounded-field">{session._found ? session.data.user.name : 'Menu'} <ChevronDownIcon className="w-6" /></div>
+                                <div tabIndex={0} role="button" className="btn btn-ghost rounded-field">{session ? session.data.user.name : 'Menu'} <ChevronDownIcon className="w-6" /></div>
                                 <MainMenuItems />
                             </div>
                         ) : (

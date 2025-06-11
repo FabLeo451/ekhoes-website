@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify, SignJWT } from 'jose';
-import { isAdmin, hasPrivilege } from '@/lib/utils'
 
 const COOKIE_NAME = process.env.COOKIE_NAME;
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -58,30 +57,23 @@ export async function middleware(request) {
 			//console.log('[middleware] Requested privilege', authPaths[pathname].privilege);
 			//console.log('[middleware] User privileges', payload.user.privileges);
 
-			if (!authPaths[pathname].privilege || hasPrivilege(payload.user, authPaths[pathname].privilege)) {
+			let authorized = false;
 
-				
+			const privilege = authPaths[pathname].privilege;
 
-				// Renew token
-				/*
-				var sessionId = payload.sessionId;
-				const newToken = await new SignJWT(payload)
-					.setProtectedHeader({ alg: 'HS256' })
-					.setIssuedAt()
-					.setExpirationTime(TOKEN_EXPIRATION_TOKEN) // puoi usare anche "1h", "7d", etc.
-					.sign(JWT_SECRET);
+			if (privilege) {
+				const hasRole = payload.user.privileges.some(role => role.toLowerCase() === privilege.toLowerCase());
+				const hasAdminRole = payload.user.privileges.some(role => role.toLowerCase() === 'admin');
 
+				authorized = hasRole || hasAdminRole;
 
-				response.cookies.set(COOKIE_NAME, newToken, {
-					httpOnly: true,
-					// secure: true, // if HTTPS
-					sameSite: 'none',
-					path: '/'
-				});
-				*/
+			} else
+				authorized = true;
 
+			if (authorized) {
 
-				//return response;
+				// Authenticated with right role
+
 			} else {
 
 				return new NextResponse(JSON.stringify({ error: 'Forbidden: missing permissions' }), {

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import Link from 'next/link';
-import * as Utils from '@/lib/utils';
+import * as Session from '@/lib/session';
 const redis = require('@/lib/redis');
 
 export default async function HomeLoggedIn() {
@@ -47,7 +47,7 @@ export default async function HomeLoggedIn() {
             </div>
 
             {/* Control panel */}
-            {Utils.hasPrivilege(session, 'read_session') && (
+            {await Session.hasPrivilege('read_session') && (
                 <div className="card w-85 bg-white/10 border border-white/10 backdrop-blur-md shadow-2xl shadow-black/40">
                     <div className="card-body">
                         <h2 className="card-title">Control panel</h2>

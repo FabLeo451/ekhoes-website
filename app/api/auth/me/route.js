@@ -30,10 +30,10 @@ export async function GET(req) {
 		'Content-Type': 'application/json',
 	};
 
-	let result = await Session.getCurrentSession();
+	let session = await Session.getCurrentSession();
 
-	return new NextResponse(JSON.stringify(result._found ? result.data : result), {
-		status: result._found ? 200 : 404,
+	return new NextResponse(JSON.stringify(session ? session.data : { message: "Not authenticated"}), {
+		status: session ? 200 : 403,
 		headers: corsHeaders,
 	});
 
@@ -51,11 +51,11 @@ export async function PUT(request) {
 		'Content-Type': 'application/json',
 	};
 
-	let result = await Session.getCurrentSession();
+	let session = await Session.getCurrentSession();
 
-	if (!result._found) {
-		return new NextResponse(JSON.stringify(result), {
-			status: 404,
+	if (!session) {
+		return new NextResponse(JSON.stringify(session ? session.data : { message: "Not authenticated"}), {
+			status: session ? 200 : 403,
 			headers: corsHeaders,
 		});
 	}
@@ -102,11 +102,11 @@ export async function DELETE(request) {
 		'Content-Type': 'application/json',
 	};
 
-	let result = await Session.getCurrentSession();
+	let session = await Session.getCurrentSession();
 
-	if (!result._found) {
-		return new NextResponse(JSON.stringify(result), {
-			status: 404,
+	if (!session) {
+		return new NextResponse(JSON.stringify(session ? session.data : { message: "Not authenticated"}), {
+			status: session ? 200 : 403,
 			headers: corsHeaders,
 		});
 	}
