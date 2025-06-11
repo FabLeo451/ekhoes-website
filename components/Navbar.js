@@ -28,9 +28,9 @@ export default async function Navbar() {
                             <Link href="/login">
                                 <button className="btn btn-primary mx-[2em]">Log in</button>
                             </Link>
-                            <Link href="/sign-in">
+                            {/*<Link href="/sign-in">
                                 <button className="btn btn-soft">Sign in</button>
-                            </Link>
+                            </Link>*/}
                             </>
                         )}
                     </div>
