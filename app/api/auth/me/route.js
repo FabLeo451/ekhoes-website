@@ -60,7 +60,7 @@ export async function PUT(request) {
 		});
 	}
 
-	const userId = result.data.user.id;
+	const userId = session.data.user.id;
 	let rowCount = 0;
 
 	const { name } = await request.json();
@@ -111,7 +111,7 @@ export async function DELETE(request) {
 		});
 	}
 
-	const userId = result.data.user.id;
+	const userId = session.data.user.id;
 	let rowCount = 0;
 
 	try {
