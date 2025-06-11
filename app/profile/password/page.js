@@ -30,7 +30,10 @@ function Form({ onSuccess }) {
 			setSuccessMessage(null)
 			const response = await axios.put(`/api/auth/me/password`, { password });
 
-			setSuccessMessage('Password successfully updated')
+			setSuccessMessage('Password successfully updated');
+
+			setPassword("");
+			setPasswordConfirm("");
 
 		} catch (err) {
 			if (!err.response) {
