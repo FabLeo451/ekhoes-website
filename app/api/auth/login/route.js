@@ -123,15 +123,8 @@ export async function POST(request) {
 
     //const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
     const token = jwt.sign({ sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET);
-    /*
-        setCookie(res, COOKIE_NAME, token, {
-            httpOnly: true,
-            secure: true, // if HTTPS
-            sameSite: 'none',
-            path: '/'
-        });
-    */
-    // ✅ Serializza il cookie
+
+    // ✅ Serializze
     const cookie = serialize(COOKIE_NAME, token, {
         httpOnly: true,
         secure: true,
@@ -143,9 +136,11 @@ export async function POST(request) {
     //console.log('[login] token = ', token);
 
     try {
-        //await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }), 'EX', 3600);
-        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, updated, status }));
+        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, updated, status }), 'EX', process.env.SESSION_TTL || 3600);
     } catch (err) {
+
+        console.log('[login]', err);
+
         return new NextResponse(JSON.stringify({ message: 'Redis unavailable', error: err.message }), {
             status: 500,
             headers: corsHeaders,
