@@ -15,6 +15,10 @@ export default async function Navbar() {
                 </a>
             </div>
 
+            <div className='ml-[1em] text-ms'>
+                <Link href="/contacts">Contacts</Link>
+            </div>
+
             <div className="flex justify-end w-full">
                 <div className="flex items-center space-x-2">
                     <div className="dropdown dropdown-end">
