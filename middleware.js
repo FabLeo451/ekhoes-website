@@ -6,7 +6,8 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 const TOKEN_EXPIRATION_TOKEN = process.env.TOKEN_EXPIRATION_TOKEN;
 
 var authPaths = {
-
+	'/profile': { privileges: ['access'] }, 
+	'/profile/password': { privileges: ['access'] }
 };
 
 export async function middleware(request) {
