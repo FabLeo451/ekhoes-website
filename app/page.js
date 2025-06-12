@@ -6,6 +6,7 @@ import News from '@/components/news';
 const SCHEMA = process.env.DB_SCHEMA;
 const MAX_NEWS = process.env.MAX_NEWS || 10;
 const TAGLINE = process.env.TAGLINE || 'Work in progress...';
+const BANNER = process.env.BANNER || 'Work in progress...';
 
 export default async function Home() {
 
@@ -43,8 +44,11 @@ export default async function Home() {
 						<h1 className="text-5xl md:text-6xl font-extrabold text-white neon-text drop-shadow-md animate-pulse">
 							ekhoes
 						</h1>
-						<p className="text-lg md:text-xl text-gray-400 mt-[2em]">
+						<p className="text-lg md:text-xl text-gray-300 mt-[0.5em]">
 							{TAGLINE}
+						</p>
+						<p className="text-base text-gray-400 mt-[2em]">
+							{BANNER}
 						</p>
 					</div>
 
