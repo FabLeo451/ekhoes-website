@@ -1,25 +1,16 @@
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
 import pkg from '@/package.json';
 import HomeLoggedIn from '@/components/HomeLoggedIn';
-import pool from '@/lib/db';
+import { isAuthenticated } from '@/lib/session';
 import News from '@/components/news';
 
 const SCHEMA = process.env.DB_SCHEMA;
 const MAX_NEWS = process.env.MAX_NEWS || 10;
 const TAGLINE = process.env.TAGLINE || 'Work in progress...';
 
-async function getNews() {
-	const res = await pool.query(`SELECT id, created, text FROM ${SCHEMA}.NEWS ORDER BY created DESC LIMIT ${MAX_NEWS}`);
-
-	//console.log('[home]', res.rows)
-	return res.rows;
-}
-
 export default async function Home() {
 
 	const version = pkg.version || '1.0.0'; // fallback
-
+/*
 	const cookieStore = await cookies();
 	const token = cookieStore.get(process.env.COOKIE_NAME)?.value;
 
@@ -36,14 +27,14 @@ export default async function Home() {
 	} catch (err) {
 		//return (<div className="pl-1">Invalid token: {err.message}</div>);
 	}
-
-	const news = await getNews();
+*/
+	//const news = await getNews();
 
 	return (
 		<div>
 
 			{/* Contenuto centrale */}
-			{loggedIn ? (
+			{await isAuthenticated() ? (
 				<HomeLoggedIn />
 			) : (
 				<div className="relative min-h-screen flex flex-col text-center px-6 py-[3em]">

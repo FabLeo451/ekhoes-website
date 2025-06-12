@@ -127,8 +127,8 @@ export async function POST(request) {
     // ✅ Serializze
     const cookie = serialize(COOKIE_NAME, token, {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         path: '/',
         //maxAge: 60 * 60 * 24 * 7 // 7 giorni
     });
@@ -153,6 +153,9 @@ export async function POST(request) {
     });
 
     response.headers.set('Set-Cookie', cookie);
+
+    //console.log('[login] response = ', response);
+
     return response;
 
 }
