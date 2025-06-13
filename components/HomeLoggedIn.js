@@ -47,7 +47,7 @@ export default async function HomeLoggedIn() {
             </div>
 
             {/* Control panel */}
-            {await Session.hasPrivilege('read_session') && (
+            {await Session.hasPrivilege('ek_read_session') && (
                 <div className="card w-85 bg-white/10 border border-white/10 backdrop-blur-md shadow-2xl shadow-black/40">
                     <div className="card-body">
                         <h2 className="card-title">Control panel</h2>
