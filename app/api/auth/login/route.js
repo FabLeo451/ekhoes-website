@@ -130,6 +130,7 @@ export async function POST(request) {
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         path: '/',
+        domain: process.env.NODE_ENV === 'production' ? '.ekhoes.com' : undefined,
         //maxAge: 60 * 60 * 24 * 7 // 7 giorni
     });
 
