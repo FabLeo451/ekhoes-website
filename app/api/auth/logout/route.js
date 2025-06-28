@@ -48,6 +48,7 @@ export async function POST(req) {
 			sameSite: 'none',
 			path: '/',
 			maxAge: -1,
+			domain: '.ekhoes.com',
 		});
 
 		const response = new NextResponse(JSON.stringify({ message: 'Logged out' }), {
