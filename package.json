@@ -1,6 +1,6 @@
 {
   "name": "ekhoes-website",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha2",
   "private": true,
   "scripts": {
     "dev": "next dev",

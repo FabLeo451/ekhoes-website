@@ -6,13 +6,16 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 const TOKEN_EXPIRATION_TOKEN = process.env.TOKEN_EXPIRATION_TOKEN;
 
 var authPaths = {
-	'/profile': { privileges: ['ek_access'] }, 
-	'/profile/password': { privileges: ['ek_access'] }
+	'/profile': { privilege: 'ek_access' }, 
+	'/profile/password': { privilege: 'ek_access' }
 };
 
 export async function middleware(request) {
 
-	// Gestione diretta delle richieste OPTIONS
+	const now = new Date().toLocaleString();
+	const ip = request.headers.get('x-forwarded-for') || request.ip || '?:?:?:?';
+	const { pathname } = request.nextUrl;
+
 	if (request.method === 'OPTIONS') {
 
 		const origin = request.headers.get('origin') || '*'
@@ -28,9 +31,7 @@ export async function middleware(request) {
 		})
 	}
 
-	const { pathname } = request.nextUrl;
-
-	console.log('[middleware] ' + request.method + ' ', pathname)
+	console.log(`${now} [middleware] ${ip} | ${request.method} ${pathname}`);
 	//console.log('[middleware] cookies', request.cookies)
 
 	var response = NextResponse.next();
@@ -53,20 +54,20 @@ export async function middleware(request) {
 
 			//console.log('[middleware] ', payload);
 
+			const privilege = authPaths[pathname].privilege;
+
 			// Check privileges
 
-			//console.log('[middleware] Requested privilege', authPaths[pathname].privilege);
-			//console.log('[middleware] User privileges', payload.user.privileges);
+			//console.log('[middleware] Requested privilege:', privilege);
+			//console.log('[middleware] User privileges:', payload.user.privileges);
 
 			let authorized = false;
 
-			const privilege = authPaths[pathname].privilege;
-
 			if (privilege) {
-				const hasRole = payload.user.privileges.some(role => role.toLowerCase() === privilege.toLowerCase());
-				const hasAdminRole = payload.user.privileges.some(role => role.toLowerCase() === 'admin');
+				const hasPrivilege = payload.user.privileges.includes(privilege.toLowerCase());
+				const hasAdminRole = payload.user.privileges.includes('ek_admin');
 
-				authorized = hasRole || hasAdminRole;
+				authorized = hasPrivilege || hasAdminRole;
 
 			} else
 				authorized = true;
