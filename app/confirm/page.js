@@ -48,8 +48,8 @@ export default async function Confirm({ searchParams }) {
         <div style={{ color: 'green' }}>
           <div className="m-[6em] w-[20em] mx-auto justify-center text-center">
             <div className="text-2xl font-bold mb-2">✅ Confirmed</div>
-            <p className="my-[2em]">Welcome, <strong>{username}</strong>!</p>
-            <p>Welcome! Now you can log in with your email and password.</p>
+            <p className="my-[2em]">Welcome!</p>
+            <p>Now you can log in with your email and password.</p>
           </div>
         </div>
       ) : (

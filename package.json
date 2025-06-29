@@ -1,6 +1,6 @@
 {
   "name": "ekhoes-website",
-  "version": "1.0.0-alpha2",
+  "version": "1.0.0-alpha3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,6 +23,7 @@
     "pg": "^8.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "resend": "^4.6.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

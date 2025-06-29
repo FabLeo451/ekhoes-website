@@ -40,7 +40,7 @@ export async function POST(request) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const result = await pool.query(`select user_id from ${SCHEMA}.confirmations where request = 'sign-in' and token = $1`, [token]);
+    const result = await pool.query(`select user_id from ${SCHEMA}.confirmations where request = 'sign-up' and token = $1`, [token]);
 
     if (result.rowCount > 0) {
 

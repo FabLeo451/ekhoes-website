@@ -44,7 +44,7 @@ function Form({ onSuccess }) {
 
     try {
       setError('');
-      const response = await axios.post('/api/sign-in', { email, username, password });
+      const response = await axios.post('/api/sign-up', { email, username, password });
       onSuccess(response.data.username || username);
     } catch (err) {
       if (!err.response) {
@@ -58,7 +58,7 @@ function Form({ onSuccess }) {
   return (
     <>
       <div className="flex justify-center my-[1em] font-bold text-4xl">
-        Sign in
+        Sign up
       </div>
 
       <div className="w-[20em] mx-auto">

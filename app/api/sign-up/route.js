@@ -11,16 +11,23 @@ async function sendMail(to, name, user_name, token) {
 
 	let subject = 'Registration to ekhoes.com';
 
-	let html = `
-		<p>Hello, ${name}.</p>
-		<p>Take note of your user code, it can be useful: <strong>${user_name}</strong>.</p>
-		<p>
-			Click on the link below to complete the registration process:<br>
-			<a href='http://localhost:3001/confirm?token=${token}'>Confirm</a>
-		</p>
-	`;
+	if (/*process.env.NODE_ENV === 'production'*/true) {
 
-    return Mail.send(to, subject, html);
+		return Mail.sendSignUp(to, subject, name, user_name, token)
+
+	} else {
+
+		let html = `
+			<p>Hello, ${name}.</p>
+			<p>Take note of your user code, it can be useful: <strong>${user_name}</strong>.</p>
+			<p>
+				Click on the link below to complete the registration process:<br>
+				<a href='http://localhost:3001/confirm?token=${token}'>Confirm</a>
+			</p>
+		`;
+
+		return Mail.sendLocal(to, subject, html);
+	}
 }
 
 export async function POST(req) {
@@ -42,13 +49,14 @@ export async function POST(req) {
 		const result = await pool.query(query, [id, username, email, password]);
 
 		await pool.query(`INSERT INTO ${SCHEMA}.user_roles ("user_id", "roles") VALUES ($1, 'USER')`, [id]);
-		await pool.query(`INSERT INTO ${SCHEMA}.confirmations ("user_id", "request", "token") VALUES ($1, 'sign-in', $2)`, [id, token]);
+		await pool.query(`INSERT INTO ${SCHEMA}.confirmations ("user_id", "request", "token") VALUES ($1, 'sign-up', $2)`, [id, token]);
 
 		await pool.query('COMMIT');
 
 		console.log('[sign-in] inserted = ', result.rows[0]);
 
-		sendMail(email, username, result.rows[0].user_name, token);
+		//sendMail(email, username, result.rows[0].user_name, token);
+		Mail.sendSignUp(email, 'Registration to ekhoes.com', username, result.rows[0].user_name, token)
 
 		return NextResponse.json({ message: 'Created' }, { status: 201 });
 

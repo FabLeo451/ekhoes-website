@@ -165,9 +165,9 @@ function Form({ onSuccess }) {
 						<a href="/profile/password" className="link" >Change password</a>
 					</div>
 
-					<div className="flex justify-center mt-[1em] text-gray-300">
+					{/*<div className="flex justify-center mt-[1em] text-gray-300">
 						<a href="/change-email" className="link" >Change email</a>
-					</div>
+					</div>*/}
 
 				</form>
 
