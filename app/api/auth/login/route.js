@@ -11,8 +11,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = process.env.COOKIE_NAME;
 const SCHEMA = process.env.DB_SCHEMA;
 
-// curl -v -X POST -H "Origin: http://localhost:3000" -H "Content-Type: application/json" -d '{ "email":"q@w.e", "password": "fabio"}' http://192.168.1.126:3000/api/auth/login
-
 // CORS preflight
 export async function OPTIONS(request) {
     const origin = request.headers.get('origin') || 'http://localhost:3000';
@@ -123,29 +121,27 @@ export async function POST(request) {
 
     // Create a JWT token and set coocke
 
-    const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
-    /*
-        setCookie(res, COOKIE_NAME, token, {
-            httpOnly: true,
-            secure: true, // if HTTPS
-            sameSite: 'none',
-            path: '/'
-        });
-    */
-    // ✅ Serializza il cookie
+    //const token = jwt.sign({ sessionId: sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET, { expiresIn: '30m' });
+    const token = jwt.sign({ sessionId, user: { name: user.name, roles: user.roles, privileges: user.privileges } }, JWT_SECRET);
+
+    // ✅ Serializze
     const cookie = serialize(COOKIE_NAME, token, {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         path: '/',
+        domain: process.env.NODE_ENV === 'production' ? '.ekhoes.com' : undefined,
         //maxAge: 60 * 60 * 24 * 7 // 7 giorni
     });
 
     //console.log('[login] token = ', token);
 
     try {
-        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, token, updated, status }), 'EX', 3600);
+        await redis.set(`${sessionId}`, JSON.stringify({ user, agent, platform, ip, updated, status }), 'EX', process.env.SESSION_TTL || 3600);
     } catch (err) {
+
+        console.log('[login]', err);
+
         return new NextResponse(JSON.stringify({ message: 'Redis unavailable', error: err.message }), {
             status: 500,
             headers: corsHeaders,
@@ -158,6 +154,9 @@ export async function POST(request) {
     });
 
     response.headers.set('Set-Cookie', cookie);
+
+    //console.log('[login] response = ', response);
+
     return response;
 
 }

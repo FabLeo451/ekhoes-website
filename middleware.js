@@ -1,18 +1,21 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify, SignJWT } from 'jose';
-import { isAdmin, hasPrivilege } from '@/lib/utils'
 
 const COOKIE_NAME = process.env.COOKIE_NAME;
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 const TOKEN_EXPIRATION_TOKEN = process.env.TOKEN_EXPIRATION_TOKEN;
 
 var authPaths = {
-
+	'/profile': { privilege: 'ek_access' }, 
+	'/profile/password': { privilege: 'ek_access' }
 };
 
 export async function middleware(request) {
 
-	// Gestione diretta delle richieste OPTIONS
+	const now = new Date().toLocaleString();
+	const ip = request.headers.get('x-forwarded-for') || request.ip || '?:?:?:?';
+	const { pathname } = request.nextUrl;
+
 	if (request.method === 'OPTIONS') {
 
 		const origin = request.headers.get('origin') || '*'
@@ -28,9 +31,7 @@ export async function middleware(request) {
 		})
 	}
 
-	const { pathname } = request.nextUrl;
-
-	console.log('[middleware] ' + request.method + ' ', pathname)
+	console.log(`${now} [middleware] ${ip} | ${request.method} ${pathname}`);
 	//console.log('[middleware] cookies', request.cookies)
 
 	var response = NextResponse.next();
@@ -53,35 +54,28 @@ export async function middleware(request) {
 
 			//console.log('[middleware] ', payload);
 
+			const privilege = authPaths[pathname].privilege;
+
 			// Check privileges
 
-			//console.log('[middleware] Requested privilege', authPaths[pathname].privilege);
-			//console.log('[middleware] User privileges', payload.user.privileges);
+			//console.log('[middleware] Requested privilege:', privilege);
+			//console.log('[middleware] User privileges:', payload.user.privileges);
 
-			if (!authPaths[pathname].privilege || hasPrivilege(payload.user, authPaths[pathname].privilege)) {
+			let authorized = false;
 
-				
+			if (privilege) {
+				const hasPrivilege = payload.user.privileges.includes(privilege.toLowerCase());
+				const hasAdminRole = payload.user.privileges.includes('ek_admin');
 
-				// Renew token
-				/*
-				var sessionId = payload.sessionId;
-				const newToken = await new SignJWT(payload)
-					.setProtectedHeader({ alg: 'HS256' })
-					.setIssuedAt()
-					.setExpirationTime(TOKEN_EXPIRATION_TOKEN) // puoi usare anche "1h", "7d", etc.
-					.sign(JWT_SECRET);
+				authorized = hasPrivilege || hasAdminRole;
 
+			} else
+				authorized = true;
 
-				response.cookies.set(COOKIE_NAME, newToken, {
-					httpOnly: true,
-					// secure: true, // if HTTPS
-					sameSite: 'none',
-					path: '/'
-				});
-				*/
+			if (authorized) {
 
+				// Authenticated with right role
 
-				//return response;
 			} else {
 
 				return new NextResponse(JSON.stringify({ error: 'Forbidden: missing permissions' }), {

@@ -1,9 +1,9 @@
 {
   "name": "ekhoes-website",
-  "version": "0.1.0",
+  "version": "1.0.0-alpha3",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -19,9 +19,11 @@
     "jose": "^6.0.11",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.3",
+    "nodemailer": "^7.0.3",
     "pg": "^8.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "resend": "^4.6.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

@@ -55,7 +55,7 @@ export default function LoginPage() {
     };
     return (
         <>
-            <div className="flex justify-center my-[1em] font-bold text-4xl">
+            <div className="flex justify-center font-bold text-4xl">
                 Log in
             </div>
 
@@ -120,9 +120,9 @@ export default function LoginPage() {
                 </form>
             </div>
 
-            <div className="flex justify-center mt-[4em]">
+            {/*<div className="flex justify-center mt-[4em]">
                 <a href="/sign-in" className="link" >Sign in</a>
-            </div>
+            </div>*/}
         </>
     );
 }
