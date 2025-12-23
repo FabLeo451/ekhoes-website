@@ -68,7 +68,7 @@ export default function LeafletMap({ hotspots, center = [45.4642, 9.19], zoom = 
 			ref={mapContainerRef}
 			style={{
 				width: '100%',
-				height: '100vh', // occupa tutto lo schermo
+				height: '100%', // occupa tutto lo schermo
 			}}
 		/>
 	);
@@ -77,29 +77,32 @@ export default function LeafletMap({ hotspots, center = [45.4642, 9.19], zoom = 
 function addHotspotMarker(L, map, h) {
 	const icon = L.divIcon({
 		html: `
-      <div style="position: relative; width: 60px; height: 60px;">
-        <div class="pulsing-circle" style="position:absolute;top:15px;left:15px"></div>
+      <div style="position: relative; width: 80px; height: 80px; text-align:center;">
+        <div class="pulsing-circle" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);"></div>
         <div style="
           position: absolute;
-          top: 50px;
+          top: 45px;
           left: 50%;
           transform: translateX(-50%);
           font-size: 12px;
           font-weight: bold;
+          color: black;
           background: white;
           padding: 2px 5px;
           border: 1px solid gray;
           border-radius: 3px;
           white-space: nowrap;
+          z-index: 1000;
         ">
           ${h.name || ''}
         </div>
       </div>
     `,
 		className: '',
-		iconSize: [60, 70],
-		iconAnchor: [30, 30],
+		iconSize: [80, 80],
+		iconAnchor: [40, 40], // centro del div
 	});
 
 	L.marker([h.position.latitude, h.position.longitude], { icon }).addTo(map);
 }
+

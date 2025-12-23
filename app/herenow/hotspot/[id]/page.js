@@ -21,7 +21,7 @@ export default function Hotspot({ params }) {
 				return res.json();
 			})
 			.then((data) => {
-				//console.log(data);
+				console.log(data);
 				if (data) {
 					setHotspots(data);
 				}
@@ -36,7 +36,48 @@ export default function Hotspot({ params }) {
 
 	return (
 		<div>
-			<LeafletMap hotspots={hotspots} />
+			<div style={{ height: '30vh', width: '100%' }}>
+				<LeafletMap hotspots={hotspots} />
+			</div>
+			<div style={{
+				maxWidth: '800px',
+				marginTop: '10px',
+				padding: '10px',
+				color: '#fff', // testo chiaro
+				boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+				fontFamily: 'Arial, sans-serif',
+			}}>
+				{/* Nome hotspot: più grande e in grassetto */}
+				<div style={{
+					fontSize: '1.8rem',
+					fontWeight: '700',
+					marginBottom: '8px',
+					color: '#00BFFF', // blu acceso per evidenziare
+				}}>
+					{hotspots[0].name}
+				</div>
+
+				{/* Owner: più piccolo e in corsivo */}
+				<div style={{
+					fontSize: '1rem',
+					fontStyle: 'italic',
+					marginBottom: '12px',
+					color: '#aaa', // grigio chiaro
+				}}>
+					Created by {hotspots[0].owner}
+				</div>
+
+				{/* Descrizione: dimensione media, line-height maggiore */}
+				<div style={{
+					fontSize: '1.1rem',
+					lineHeight: '1.6',
+					color: '#eee', // quasi bianco
+				}}>
+					{hotspots[0].description}
+				</div>
+			</div>
+
 		</div>
 	);
+
 }
