@@ -2,17 +2,25 @@
 import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 
-export default function LeafletMap({ hotspots, center = [45.4642, 9.19], zoom = 13, height = '500px' }) {
+export default function LeafletMap({ hotspots, center = [45.4642, 9.19], zoom = 16, height = '500px' }) {
 	const mapRef = useRef(null);
+	const LRef = useRef(null);
 
 	useEffect(() => {
 		let map;
+
 		(async () => {
 			const L = (await import('leaflet')).default;
+			LRef.current = L;
+
 			const container = document.getElementById('leaflet-map');
 			if (!container) return;
 
-			map = L.map(container).setView(center, zoom);
+			const initialCenter = hotspots.length
+				? [hotspots[0].position.latitude, hotspots[0].position.longitude]
+				: center;
+
+			map = L.map(container).setView(initialCenter, zoom);
 
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '© OpenStreetMap contributors',
@@ -20,15 +28,21 @@ export default function LeafletMap({ hotspots, center = [45.4642, 9.19], zoom = 
 
 			mapRef.current = map;
 
-			hotspots.forEach(h => {
-				if (h.enabled) addHotspotMarker(L, map, h);
-			});
+			// aggiungi marker solo quando la mappa è pronta
+			if (hotspots && hotspots.length) {
+				hotspots.forEach(h => {
+					if (h.enabled) addHotspotMarker(L, map, h);
+				});
+			}
 		})();
 
 		return () => {
-			if (map) map.remove();
+			if (mapRef.current) {
+				mapRef.current.remove();
+				mapRef.current = null;
+			}
 		};
-	}, [center, zoom, hotspots]);
+	}, [hotspots, center, zoom]);
 
 	return <div id="leaflet-map" style={{ height, width: '100%' }} />;
 }
