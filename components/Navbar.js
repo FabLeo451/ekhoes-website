@@ -29,12 +29,12 @@ export default async function Navbar() {
                             </div>
                         ) : (
                             <>
-                            <a href="/login">
-                                <button className="btn btn-primary">Log in</button>
-                            </a>
-                            {<Link href="/sign-up">
-                                <button className="btn btn-soft ml-[1em]">Sign up</button>
-                            </Link>}
+                                {<Link href="/sign-up">
+                                    <button className="btn btn-soft">Sign up</button>
+                                </Link>}
+                                <a href="/login">
+                                    <button className="btn btn-primary ml-[1em]">Log in</button>
+                                </a>
                             </>
                         )}
                     </div>
