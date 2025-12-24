@@ -8,6 +8,7 @@ export default function Hotspot({ params }) {
 	const id = use(params).id;
 	const [hotspots, setHotspots] = useState([]);
 	const [notFound, setNotFound] = useState(false);
+	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
 		if (!id) return;
@@ -24,6 +25,7 @@ export default function Hotspot({ params }) {
 				console.log(data);
 				if (data) {
 					setHotspots(data);
+					setLoaded(true);
 				}
 			})
 			.catch((err) => {
@@ -33,6 +35,7 @@ export default function Hotspot({ params }) {
 	}, [id]);
 
 	if (notFound) return <div>Hotspot not found (404)</div>;
+	if (!loaded) return <div>Loading...</div>;
 
 	return (
 		<div>
@@ -42,7 +45,7 @@ export default function Hotspot({ params }) {
 			<div style={{
 				maxWidth: '800px',
 				marginTop: '10px',
-				padding: '10px',
+				padding: '5px 20px 5px 20px',
 				color: '#fff', // testo chiaro
 				boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
 				fontFamily: 'Arial, sans-serif',
@@ -51,7 +54,7 @@ export default function Hotspot({ params }) {
 				<div style={{
 					fontSize: '1.8rem',
 					fontWeight: '700',
-					marginBottom: '8px',
+
 					color: '#00BFFF', // blu acceso per evidenziare
 				}}>
 					{hotspots[0].name}
@@ -61,7 +64,7 @@ export default function Hotspot({ params }) {
 				<div style={{
 					fontSize: '1rem',
 					fontStyle: 'italic',
-					marginBottom: '12px',
+					marginBottom: '8px',
 					color: '#aaa', // grigio chiaro
 				}}>
 					Created by {hotspots[0].owner}
